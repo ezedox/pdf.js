@@ -84,8 +84,10 @@ class AnnotationFactory {
           case 'Ch':
             return new ChoiceWidgetAnnotation(parameters);
         }
+        /* # ezedox_pdfjs => hide the warning if signature is detected
         warn('Unimplemented widget field type "' + fieldType + '", ' +
              'falling back to base field type.');
+        ! ezedox_pdfjs */
         return new WidgetAnnotation(parameters);
 
       case 'Popup':
@@ -610,10 +612,12 @@ class WidgetAnnotation extends Annotation {
 
     data.readOnly = this.hasFieldFlag(AnnotationFieldFlag.READONLY);
 
+    /* # ezedox_pdfjs => Do not hide Signature Annotation
     // Hide signatures because we cannot validate them.
     if (data.fieldType === 'Sig') {
       this.setFlags(AnnotationFlag.HIDDEN);
     }
+    ! ezedox_pdfjs */
   }
 
   /**

@@ -1530,7 +1530,13 @@ function webViewerInitialized() {
     fileInput.className = 'fileInput';
     fileInput.setAttribute('type', 'file');
     fileInput.oncontextmenu = noContextMenuHandler;
-    document.body.appendChild(fileInput);
+    /* # ezedox_pdfjs => use #viewer-body to add viewer events */
+    if (document.getElementById('viewer-body')) {
+      document.getElementById('viewer-body').appendChild(fileInput);
+    } else {
+      document.body.appendChild(fileInput);
+    }
+    /* ! ezedox_pdfjs */
 
     if (!window.File || !window.FileReader ||
         !window.FileList || !window.Blob) {

@@ -57,7 +57,10 @@ if (typeof PDFJSDev !== 'undefined' && PDFJSDev.test('CHROME || GENERIC')) {
 
 function getViewerConfiguration() {
   return {
-    appContainer: document.body,
+    /* # ezedox_pdfjs => use #viewer-body to add viewer events */
+    appContainer: document.getElementById('viewer-body') ?
+      document.getElementById('viewer-body') : document.body,
+    /* ! ezedox_pdfjs */
     mainContainer: document.getElementById('viewerContainer'),
     viewerContainer: document.getElementById('viewer'),
     eventBus: null, // using global event bus with DOM events

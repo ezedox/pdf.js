@@ -42,7 +42,7 @@ const defaultOptions = {
   },
   defaultZoomValue: {
     /** @type {string} */
-    value: '',
+    value: EZEDOX_CONSTANTS.defaultZoomValue,
     kind: OptionKind.VIEWER,
   },
   disableHistory: {

@@ -3,6 +3,7 @@ const EZEDOX_CONSTANTS = {
     cMapUrl: '//localhost:8888/build/generic/web/cmaps/',
     defaultUrl: '',
     showPreviousViewOnLoad: false,
+    defaultZoomValue: 'auto',
 };
 
 export default EZEDOX_CONSTANTS;

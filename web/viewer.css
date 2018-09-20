@@ -1364,13 +1364,13 @@ html[dir='rtl'] .outlineItemToggler::before {
   -webkit-overflow-scrolling: touch;
 }
 
-#overlayContainer > .container {
+#overlayContainer > .ezedox_pdfjs_container {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
 }
 
-#overlayContainer > .container > .dialog {
+#overlayContainer > .ezedox_pdfjs_container > .dialog {
   display: inline-block;
   padding: 15px;
   border-spacing: 4px;

@@ -1390,11 +1390,11 @@ html[dir='rtl'] .outlineItemToggler::before {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
-.dialog > .row {
+.dialog > .ezedox_pdfjs_row {
   display: table-row;
 }
 
-.dialog > .row > * {
+.dialog > .ezedox_pdfjs_row > * {
   display: table-cell;
 }
 
@@ -1430,20 +1430,20 @@ html[dir='rtl'] .outlineItemToggler::before {
 #documentPropertiesOverlay > .dialog {
   text-align: left;
 }
-#documentPropertiesOverlay .row > * {
+#documentPropertiesOverlay .ezedox_pdfjs_row > * {
   min-width: 100px;
 }
-html[dir='ltr'] #documentPropertiesOverlay .row > * {
+html[dir='ltr'] #documentPropertiesOverlay .ezedox_pdfjs_row > * {
   text-align: left;
 }
-html[dir='rtl'] #documentPropertiesOverlay .row > * {
+html[dir='rtl'] #documentPropertiesOverlay .ezedox_pdfjs_row > * {
   text-align: right;
 }
-#documentPropertiesOverlay .row > span {
+#documentPropertiesOverlay .ezedox_pdfjs_row > span {
   width: 125px;
   word-wrap: break-word;
 }
-#documentPropertiesOverlay .row > p {
+#documentPropertiesOverlay .ezedox_pdfjs_row > p {
   max-width: 225px;
   word-wrap: break-word;
 }

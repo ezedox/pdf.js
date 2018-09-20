@@ -14,6 +14,8 @@
  */
 
 @import url(pdf_viewer.css);
+/* ezedox_pdfjs custom overrides */
+@import url(ezedox_custom_viewer.css);
 
 :root {
   --sidebar-width: 200px;
@@ -28,16 +30,19 @@ html {
   height: 100%;
   width: 100%;
   /* Font size is needed to make the activity bar the correct size. */
-  font-size: 10px;
+  /* font-size: 10px; // # ezedox_pdfjs */
 }
 
 body {
   height: 100%;
   width: 100%;
+  /* # ezedox_pdfjs
   background-color: #404040;
   background-image: url(images/texture.png);
+  */
 }
 
+/* # ezedox_pdfjs
 body,
 input,
 button,
@@ -45,6 +50,7 @@ select {
   font: message-box;
   outline: none;
 }
+*/
 
 .hidden {
   display: none !important;

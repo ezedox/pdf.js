@@ -32,18 +32,21 @@ import { AppOptions } from './app_options';
 import { getGlobalEventBus } from './dom_events';
 import { OverlayManager } from './overlay_manager';
 import { PasswordPrompt } from './password_prompt';
-import { PDFAttachmentViewer } from './pdf_attachment_viewer';
+// # ezedox_pdfjs
+// import { PDFAttachmentViewer } from './pdf_attachment_viewer';
 import { PDFDocumentProperties } from './pdf_document_properties';
 // # ezedox_pdfjs => disable findbar
 // import { PDFFindBar } from './pdf_find_bar';
 import { PDFFindController } from './pdf_find_controller';
 import { PDFHistory } from './pdf_history';
 import { PDFLinkService } from './pdf_link_service';
-import { PDFOutlineViewer } from './pdf_outline_viewer';
+// # ezedox_pdfjs
+// import { PDFOutlineViewer } from './pdf_outline_viewer';
 import { PDFPresentationMode } from './pdf_presentation_mode';
 // # ezedox_pdfjs => disable sidebar
 // import { PDFSidebarResizer } from './pdf_sidebar_resizer';
-import { PDFThumbnailViewer } from './pdf_thumbnail_viewer';
+// # ezedox_pdfjs => disable thumbnail viewer
+// import { PDFThumbnailViewer } from './pdf_thumbnail_viewer';
 import { PDFViewer } from './pdf_viewer';
 // # ezedox_pdfjs => disable secondary toolbar
 // import { SecondaryToolbar } from './secondary_toolbar';
@@ -331,6 +334,7 @@ let PDFViewerApplication = {
     pdfRenderingQueue.setViewer(this.pdfViewer);
     pdfLinkService.setViewer(this.pdfViewer);
 
+    /* # ezedox_pdfjs => disable thumbnail viewer
     let thumbnailContainer = appConfig.sidebar.thumbnailView;
     this.pdfThumbnailViewer = new PDFThumbnailViewer({
       container: thumbnailContainer,
@@ -339,6 +343,7 @@ let PDFViewerApplication = {
       l10n: this.l10n,
     });
     pdfRenderingQueue.setThumbnailViewer(this.pdfThumbnailViewer);
+    ! ezedox_pdfjs */
 
     this.pdfHistory = new PDFHistory({
       linkService: pdfLinkService,
@@ -412,6 +417,7 @@ let PDFViewerApplication = {
     this.passwordPrompt = new PasswordPrompt(appConfig.passwordOverlay,
                                              this.overlayManager, this.l10n);
 
+    /* # ezedox_pdfjs => disable attachment and download
     this.pdfOutlineViewer = new PDFOutlineViewer({
       container: appConfig.sidebar.outlineView,
       eventBus,
@@ -423,6 +429,7 @@ let PDFViewerApplication = {
       eventBus,
       downloadManager,
     });
+    ! ezedox_pdfjs */
 
     /* # ezedox_pdfjs => disable sidebar
     // TODO: improve `PDFSidebar` constructor parameter passing
@@ -606,7 +613,8 @@ let PDFViewerApplication = {
     if (this.pdfDocument) {
       this.pdfDocument = null;
 
-      this.pdfThumbnailViewer.setDocument(null);
+      // # ezedox_pdfjs => disable thumbnail viewer
+      // this.pdfThumbnailViewer.setDocument(null);
       this.pdfViewer.setDocument(null);
       this.pdfLinkService.setDocument(null, null);
       this.pdfDocumentProperties.setDocument(null, null);
@@ -618,9 +626,11 @@ let PDFViewerApplication = {
     this.baseUrl = '';
     this.contentDispositionFilename = null;
 
-    // this.pdfSidebar.reset(); /* # ezedox_pdfjs */
+    /* # ezedox_pdfjs
+    this.pdfSidebar.reset();
     this.pdfOutlineViewer.reset();
     this.pdfAttachmentViewer.reset();
+    ! ezedox_pdfjs */
 
     this.findController.reset();
     // this.findBar.reset(); /* # ezedox_pdfjs */
@@ -941,8 +951,10 @@ let PDFViewerApplication = {
     let pagesPromise = pdfViewer.pagesPromise;
     let onePageRendered = pdfViewer.onePageRendered;
 
+    /* # ezedox_pdfjs => disable thumbnail viewer
     let pdfThumbnailViewer = this.pdfThumbnailViewer;
     pdfThumbnailViewer.setDocument(pdfDocument);
+    ! ezedox_pdfjs */
 
     firstPagePromise.then((pdfPage) => {
       this.loadingBar.setWidth(this.appConfig.viewerContainer);
@@ -1061,7 +1073,8 @@ let PDFViewerApplication = {
       }
 
       pdfViewer.setPageLabels(labels);
-      pdfThumbnailViewer.setPageLabels(labels);
+      // # ezedox_pdfjs => disable thumbnail viewer
+      // pdfThumbnailViewer.setPageLabels(labels);
 
       // Changing toolbar page display to use labels and we need to set
       // the label of the current page.
@@ -1102,12 +1115,14 @@ let PDFViewerApplication = {
     });
 
     Promise.all([onePageRendered, animationStarted]).then(() => {
+      /* # ezedox_pdfjs
       pdfDocument.getOutline().then((outline) => {
         this.pdfOutlineViewer.render({ outline, });
       });
       pdfDocument.getAttachments().then((attachments) => {
         this.pdfAttachmentViewer.render({ attachments, });
       });
+      ! ezedox_pdfjs */
     });
 
     pdfDocument.getMetadata().then(
@@ -1235,7 +1250,8 @@ let PDFViewerApplication = {
       return; // run cleanup when document is loaded
     }
     this.pdfViewer.cleanup();
-    this.pdfThumbnailViewer.cleanup();
+    // # ezedox_pdfjs => disable thumbanil viewer
+    // this.pdfThumbnailViewer.cleanup();
 
     // We don't want to remove fonts used by active page SVGs.
     if (this.pdfViewer.renderer !== RendererType.SVG) {
@@ -2040,7 +2056,8 @@ function webViewerScaleChanging(evt) {
 }
 
 function webViewerRotationChanging(evt) {
-  PDFViewerApplication.pdfThumbnailViewer.pagesRotation = evt.pagesRotation;
+  // # ezedox_pdfjs => disable thumbnail viewer
+  // PDFViewerApplication.pdfThumbnailViewer.pagesRotation = evt.pagesRotation;
 
   PDFViewerApplication.forceRendering();
   // Ensure that the active page doesn't change during rotation.

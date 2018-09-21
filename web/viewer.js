@@ -57,7 +57,10 @@ if (typeof PDFJSDev !== 'undefined' && PDFJSDev.test('CHROME || GENERIC')) {
 
 function getViewerConfiguration() {
   return {
-    appContainer: document.body,
+    /* # ezedox_pdfjs => use #viewer-body to add viewer events */
+    appContainer: document.getElementById('viewer-body') ?
+      document.getElementById('viewer-body') : document.body,
+    /* ! ezedox_pdfjs */
     mainContainer: document.getElementById('viewerContainer'),
     viewerContainer: document.getElementById('viewer'),
     eventBus: null, // using global event bus with DOM events
@@ -79,6 +82,7 @@ function getViewerConfiguration() {
       download: document.getElementById('download'),
       viewBookmark: document.getElementById('viewBookmark'),
     },
+    /* # ezedox_pdfjs
     secondaryToolbar: {
       toolbar: document.getElementById('secondaryToolbar'),
       toggleButton: document.getElementById('secondaryToolbarToggle'),
@@ -104,12 +108,14 @@ function getViewerConfiguration() {
       spreadEvenButton: document.getElementById('spreadEven'),
       documentPropertiesButton: document.getElementById('documentProperties'),
     },
+    ! ezedox_pdfjs */
     fullscreen: {
       contextFirstPage: document.getElementById('contextFirstPage'),
       contextLastPage: document.getElementById('contextLastPage'),
       contextPageRotateCw: document.getElementById('contextPageRotateCw'),
       contextPageRotateCcw: document.getElementById('contextPageRotateCcw'),
     },
+    /* # ezedox_pdfjs
     sidebar: {
       // Divs (and sidebar button)
       outerContainer: document.getElementById('outerContainer'),
@@ -140,6 +146,7 @@ function getViewerConfiguration() {
       findPreviousButton: document.getElementById('findPrevious'),
       findNextButton: document.getElementById('findNext'),
     },
+    ! ezedox_pdfjs */
     passwordOverlay: {
       overlayName: 'passwordOverlay',
       container: document.getElementById('passwordOverlay'),
@@ -178,7 +185,8 @@ function getViewerConfiguration() {
       lessInfoButton: document.getElementById('errorShowLess'),
     },
     printContainer: document.getElementById('printContainer'),
-    openFileInputName: 'fileInput',
+    // # ezedox_pdfjs
+    // openFileInputName: 'fileInput',
     debuggerScriptPath: './debugger.js',
   };
 }

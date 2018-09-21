@@ -1,0 +1,43 @@
+/* use all css from body to ezedox previewer-body ie. #viewer-body */
+#viewer-body {
+  height: 100%;
+  width: 100%;
+  background-color: #404040;
+  background-image: url(images/texture.png);
+}
+
+/* set box-sizing to default which is content-box for the preview page divs */
+#viewerContainer *,
+#viewerContainer *:before,
+#viewerContainer *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+/* Hide unwanted icons and overlays */
+#sidebarContainer,
+#findbar,
+#secondaryToolbar,
+#sidebarToggle,
+#viewFind,
+#openFile,
+#print,
+#download,
+#viewBookmark,
+#secondaryToolbarToggle,
+#documentPropertiesOverlay,
+#printServiceOverlay,
+#presentationMode {
+  display: none !important;
+}
+
+/* Decrease max-width to fix the horizontal scroll for samller screens ie (320px) */
+#mainContainer {
+  min-width: 310px !important;
+}
+
+/* Always show the scale selectbox even for smaller screens */
+#scaleSelectContainer {
+  display: inline !important;
+}

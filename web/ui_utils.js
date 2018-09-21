@@ -814,7 +814,14 @@ class ProgressBar {
     }
     this.visible = false;
     this.bar.classList.add('hidden');
-    document.body.classList.remove('loadingInProgress');
+    /* # ezedox_pdfjs => use #viewer-body to add viewer events */
+    if (document.getElementById('viewer-body')) {
+      document.getElementById('viewer-body')
+        .classList.remove('loadingInProgress');
+    } else {
+      document.body.classList.remove('loadingInProgress');
+    }
+    /* ! ezedox_pdfjs */
   }
 
   show() {
@@ -822,7 +829,13 @@ class ProgressBar {
       return;
     }
     this.visible = true;
-    document.body.classList.add('loadingInProgress');
+    /* # ezedox_pdfjs => use #viewer-body to add viewer events */
+    if (document.getElementById('viewer-body')) {
+      document.getElementById('viewer-body').classList.add('loadingInProgress');
+    } else {
+      document.body.classList.add('loadingInProgress');
+    }
+    /* ! ezedox_pdfjs */
     this.bar.classList.remove('hidden');
   }
 }

@@ -87,13 +87,25 @@ var FontInspector = (function FontInspectorClosure() {
     },
     set active(value) {
       active = value;
+      /* # ezedox_pdfjs => use #viewer-body to add viewer events */
       if (active) {
-        document.body.addEventListener('click', textLayerClick, true);
+        if (document.getElementById('viewer-body')) {
+          document.getElementById('viewer-body')
+            .addEventListener('click', textLayerClick, true);
+        } else {
+          document.body.addEventListener('click', textLayerClick, true);
+        }
         resetSelection();
       } else {
-        document.body.removeEventListener('click', textLayerClick, true);
+        if (document.getElementById('viewer-body')) {
+          document.getElementById('viewer-body')
+            .removeEventListener('click', textLayerClick, true);
+        } else {
+          document.body.removeEventListener('click', textLayerClick, true);
+        }
         removeSelection();
       }
+      /* ! ezedox_pdfjs */
     },
     // FontInspector specific functions.
     fontAdded: function fontAdded(fontObj, url) {

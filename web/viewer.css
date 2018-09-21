@@ -14,6 +14,8 @@
  */
 
 @import url(pdf_viewer.css);
+/* ezedox_pdfjs custom overrides */
+@import url(ezedox_custom_viewer.css);
 
 :root {
   --sidebar-width: 200px;
@@ -28,16 +30,19 @@ html {
   height: 100%;
   width: 100%;
   /* Font size is needed to make the activity bar the correct size. */
-  font-size: 10px;
+  /* font-size: 10px; // # ezedox_pdfjs */
 }
 
 body {
   height: 100%;
   width: 100%;
+  /* # ezedox_pdfjs
   background-color: #404040;
   background-image: url(images/texture.png);
+  */
 }
 
+/* # ezedox_pdfjs
 body,
 input,
 button,
@@ -45,6 +50,7 @@ select {
   font: message-box;
   outline: none;
 }
+*/
 
 .hidden {
   display: none !important;
@@ -1358,13 +1364,13 @@ html[dir='rtl'] .outlineItemToggler::before {
   -webkit-overflow-scrolling: touch;
 }
 
-#overlayContainer > .container {
+#overlayContainer > .ezedox_pdfjs_container {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
 }
 
-#overlayContainer > .container > .dialog {
+#overlayContainer > .ezedox_pdfjs_container > .dialog {
   display: inline-block;
   padding: 15px;
   border-spacing: 4px;
@@ -1384,11 +1390,11 @@ html[dir='rtl'] .outlineItemToggler::before {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
-.dialog > .row {
+.dialog > .ezedox_pdfjs_row {
   display: table-row;
 }
 
-.dialog > .row > * {
+.dialog > .ezedox_pdfjs_row > * {
   display: table-cell;
 }
 
@@ -1424,20 +1430,20 @@ html[dir='rtl'] .outlineItemToggler::before {
 #documentPropertiesOverlay > .dialog {
   text-align: left;
 }
-#documentPropertiesOverlay .row > * {
+#documentPropertiesOverlay .ezedox_pdfjs_row > * {
   min-width: 100px;
 }
-html[dir='ltr'] #documentPropertiesOverlay .row > * {
+html[dir='ltr'] #documentPropertiesOverlay .ezedox_pdfjs_row > * {
   text-align: left;
 }
-html[dir='rtl'] #documentPropertiesOverlay .row > * {
+html[dir='rtl'] #documentPropertiesOverlay .ezedox_pdfjs_row > * {
   text-align: right;
 }
-#documentPropertiesOverlay .row > span {
+#documentPropertiesOverlay .ezedox_pdfjs_row > span {
   width: 125px;
   word-wrap: break-word;
 }
-#documentPropertiesOverlay .row > p {
+#documentPropertiesOverlay .ezedox_pdfjs_row > p {
   max-width: 225px;
   word-wrap: break-word;
 }

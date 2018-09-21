@@ -28,23 +28,30 @@ import {
 } from 'pdfjs-lib';
 import { CursorTool, PDFCursorTools } from './pdf_cursor_tools';
 import { PDFRenderingQueue, RenderingStates } from './pdf_rendering_queue';
-import { PDFSidebar, SidebarView } from './pdf_sidebar';
 import { AppOptions } from './app_options';
 import { getGlobalEventBus } from './dom_events';
 import { OverlayManager } from './overlay_manager';
 import { PasswordPrompt } from './password_prompt';
-import { PDFAttachmentViewer } from './pdf_attachment_viewer';
+// # ezedox_pdfjs
+// import { PDFAttachmentViewer } from './pdf_attachment_viewer';
 import { PDFDocumentProperties } from './pdf_document_properties';
-import { PDFFindBar } from './pdf_find_bar';
+// # ezedox_pdfjs => disable findbar
+// import { PDFFindBar } from './pdf_find_bar';
 import { PDFFindController } from './pdf_find_controller';
 import { PDFHistory } from './pdf_history';
 import { PDFLinkService } from './pdf_link_service';
-import { PDFOutlineViewer } from './pdf_outline_viewer';
+// # ezedox_pdfjs
+// import { PDFOutlineViewer } from './pdf_outline_viewer';
 import { PDFPresentationMode } from './pdf_presentation_mode';
-import { PDFSidebarResizer } from './pdf_sidebar_resizer';
-import { PDFThumbnailViewer } from './pdf_thumbnail_viewer';
+// # ezedox_pdfjs => disable sidebar
+// import { PDFSidebarResizer } from './pdf_sidebar_resizer';
+// # ezedox_pdfjs => disable thumbnail viewer
+// import { PDFThumbnailViewer } from './pdf_thumbnail_viewer';
 import { PDFViewer } from './pdf_viewer';
-import { SecondaryToolbar } from './secondary_toolbar';
+// # ezedox_pdfjs => disable secondary toolbar
+// import { SecondaryToolbar } from './secondary_toolbar';
+// # ezedox_pdfjs => disable sidebar
+import { /* PDFSidebar, */ SidebarView } from './pdf_sidebar';
 import { Toolbar } from './toolbar';
 import { ViewHistory } from './view_history';
 
@@ -327,6 +334,7 @@ let PDFViewerApplication = {
     pdfRenderingQueue.setViewer(this.pdfViewer);
     pdfLinkService.setViewer(this.pdfViewer);
 
+    /* # ezedox_pdfjs => disable thumbnail viewer
     let thumbnailContainer = appConfig.sidebar.thumbnailView;
     this.pdfThumbnailViewer = new PDFThumbnailViewer({
       container: thumbnailContainer,
@@ -335,6 +343,7 @@ let PDFViewerApplication = {
       l10n: this.l10n,
     });
     pdfRenderingQueue.setThumbnailViewer(this.pdfThumbnailViewer);
+    ! ezedox_pdfjs */
 
     this.pdfHistory = new PDFHistory({
       linkService: pdfLinkService,
@@ -350,7 +359,8 @@ let PDFViewerApplication = {
       if (this.supportsIntegratedFind) {
         this.externalServices.updateFindMatchesCount(matchesCount);
       } else {
-        this.findBar.updateResultsCount(matchesCount);
+        // # ezedox_pdfjs => disable findbar
+        // this.findBar.updateResultsCount(matchesCount);
       }
     };
     this.findController.onUpdateState = (state, previous, matchesCount) => {
@@ -361,17 +371,20 @@ let PDFViewerApplication = {
           matchesCount,
         });
       } else {
-        this.findBar.updateUIState(state, previous, matchesCount);
+        // # ezedox_pdfjs => disable findbar
+        // this.findBar.updateUIState(state, previous, matchesCount);
       }
     };
 
     this.pdfViewer.setFindController(this.findController);
 
+    /* # ezedox_pdfjs => disable findbar
     // TODO: improve `PDFFindBar` constructor parameter passing
     let findBarConfig = Object.create(appConfig.findBar);
     findBarConfig.findController = this.findController;
     findBarConfig.eventBus = eventBus;
     this.findBar = new PDFFindBar(findBarConfig, this.l10n);
+    ! ezedox_pdfjs */
 
     this.pdfDocumentProperties =
       new PDFDocumentProperties(appConfig.documentProperties,
@@ -386,8 +399,10 @@ let PDFViewerApplication = {
     this.toolbar = new Toolbar(appConfig.toolbar, container, eventBus,
                                this.l10n);
 
+    /* # ezedox_pdfjs => disable secondary toolbar
     this.secondaryToolbar =
       new SecondaryToolbar(appConfig.secondaryToolbar, container, eventBus);
+    ! ezedox_pdfjs */
 
     if (this.supportsFullscreen) {
       this.pdfPresentationMode = new PDFPresentationMode({
@@ -402,6 +417,7 @@ let PDFViewerApplication = {
     this.passwordPrompt = new PasswordPrompt(appConfig.passwordOverlay,
                                              this.overlayManager, this.l10n);
 
+    /* # ezedox_pdfjs => disable attachment and download
     this.pdfOutlineViewer = new PDFOutlineViewer({
       container: appConfig.sidebar.outlineView,
       eventBus,
@@ -413,7 +429,9 @@ let PDFViewerApplication = {
       eventBus,
       downloadManager,
     });
+    ! ezedox_pdfjs */
 
+    /* # ezedox_pdfjs => disable sidebar
     // TODO: improve `PDFSidebar` constructor parameter passing
     let sidebarConfig = Object.create(appConfig.sidebar);
     sidebarConfig.pdfViewer = this.pdfViewer;
@@ -425,6 +443,7 @@ let PDFViewerApplication = {
 
     this.pdfSidebarResizer = new PDFSidebarResizer(appConfig.sidebarResizer,
                                                    eventBus, this.l10n);
+    ! ezedox_pdfjs */
   },
 
   run(config) {
@@ -571,7 +590,8 @@ let PDFViewerApplication = {
       // Embedded PDF viewers should not be changing their parent page's title.
       return;
     }
-    document.title = title;
+    // # ezedox_pdfjs => Do not change the page title to pdf file name
+    // document.title = title;
   },
 
   /**
@@ -593,7 +613,8 @@ let PDFViewerApplication = {
     if (this.pdfDocument) {
       this.pdfDocument = null;
 
-      this.pdfThumbnailViewer.setDocument(null);
+      // # ezedox_pdfjs => disable thumbnail viewer
+      // this.pdfThumbnailViewer.setDocument(null);
       this.pdfViewer.setDocument(null);
       this.pdfLinkService.setDocument(null, null);
       this.pdfDocumentProperties.setDocument(null, null);
@@ -605,14 +626,16 @@ let PDFViewerApplication = {
     this.baseUrl = '';
     this.contentDispositionFilename = null;
 
+    /* # ezedox_pdfjs
     this.pdfSidebar.reset();
     this.pdfOutlineViewer.reset();
     this.pdfAttachmentViewer.reset();
+    ! ezedox_pdfjs */
 
     this.findController.reset();
-    this.findBar.reset();
+    // this.findBar.reset(); /* # ezedox_pdfjs */
     this.toolbar.reset();
-    this.secondaryToolbar.reset();
+    // this.secondaryToolbar.reset(); /* # ezedox_pdfjs */
 
     if (typeof PDFBug !== 'undefined') {
       PDFBug.cleanup();
@@ -905,7 +928,9 @@ let PDFViewerApplication = {
       function() { /* Avoid breaking initial rendering; ignoring errors. */ });
 
     this.toolbar.setPagesCount(pdfDocument.numPages, false);
+    /* # ezedox_pdfjs => disable secondary toolbar
     this.secondaryToolbar.setPagesCount(pdfDocument.numPages);
+    ! ezedox_pdfjs */
 
     const store = this.store = new ViewHistory(pdfDocument.fingerprint);
 
@@ -926,8 +951,10 @@ let PDFViewerApplication = {
     let pagesPromise = pdfViewer.pagesPromise;
     let onePageRendered = pdfViewer.onePageRendered;
 
+    /* # ezedox_pdfjs => disable thumbnail viewer
     let pdfThumbnailViewer = this.pdfThumbnailViewer;
     pdfThumbnailViewer.setDocument(pdfDocument);
+    ! ezedox_pdfjs */
 
     firstPagePromise.then((pdfPage) => {
       this.loadingBar.setWidth(this.appConfig.viewerContainer);
@@ -980,7 +1007,9 @@ let PDFViewerApplication = {
         }
         if (pageMode && !AppOptions.get('disablePageMode')) {
           // Always let the user preference/history take precedence.
+          /* # ezedox_pdfjs => disable sidebar
           sidebarView = sidebarView || apiPageModeToSidebarView(pageMode);
+          ! ezedox_pdfjs */
         }
 
         this.setInitialView(hash, {
@@ -1044,7 +1073,8 @@ let PDFViewerApplication = {
       }
 
       pdfViewer.setPageLabels(labels);
-      pdfThumbnailViewer.setPageLabels(labels);
+      // # ezedox_pdfjs => disable thumbnail viewer
+      // pdfThumbnailViewer.setPageLabels(labels);
 
       // Changing toolbar page display to use labels and we need to set
       // the label of the current page.
@@ -1085,12 +1115,14 @@ let PDFViewerApplication = {
     });
 
     Promise.all([onePageRendered, animationStarted]).then(() => {
+      /* # ezedox_pdfjs
       pdfDocument.getOutline().then((outline) => {
         this.pdfOutlineViewer.render({ outline, });
       });
       pdfDocument.getAttachments().then((attachments) => {
         this.pdfAttachmentViewer.render({ attachments, });
       });
+      ! ezedox_pdfjs */
     });
 
     pdfDocument.getMetadata().then(
@@ -1185,7 +1217,7 @@ let PDFViewerApplication = {
     setViewerModes(scrollMode, spreadMode);
 
     this.isInitialViewSet = true;
-    this.pdfSidebar.setInitialView(sidebarView);
+    // this.pdfSidebar.setInitialView(sidebarView); /* # ezedox_pdfjs */
 
     if (this.initialBookmark) {
       setRotation(this.initialRotation);
@@ -1203,7 +1235,8 @@ let PDFViewerApplication = {
     // even if the active page didn't change during document load.
     this.toolbar.setPageNumber(this.pdfViewer.currentPageNumber,
                                this.pdfViewer.currentPageLabel);
-    this.secondaryToolbar.setPageNumber(this.pdfViewer.currentPageNumber);
+    // # ezedox_pdfjs => disable secondary toolbar
+    // this.secondaryToolbar.setPageNumber(this.pdfViewer.currentPageNumber);
 
     if (!this.pdfViewer.currentScaleValue) {
       // Scale was not initialized: invalid bookmark or scale was not specified.
@@ -1217,7 +1250,8 @@ let PDFViewerApplication = {
       return; // run cleanup when document is loaded
     }
     this.pdfViewer.cleanup();
-    this.pdfThumbnailViewer.cleanup();
+    // # ezedox_pdfjs => disable thumbanil viewer
+    // this.pdfThumbnailViewer.cleanup();
 
     // We don't want to remove fonts used by active page SVGs.
     if (this.pdfViewer.renderer !== RendererType.SVG) {
@@ -1227,8 +1261,10 @@ let PDFViewerApplication = {
 
   forceRendering() {
     this.pdfRenderingQueue.printing = this.printing;
+    /* # ezedox_pdfjs => disable sidebar
     this.pdfRenderingQueue.isThumbnailViewEnabled =
       this.pdfSidebar.isThumbnailViewVisible;
+    ! ezedox_pdfjs */
     this.pdfRenderingQueue.renderHighestPriority();
   },
 
@@ -1318,8 +1354,10 @@ let PDFViewerApplication = {
     eventBus.on('pagechanging', webViewerPageChanging);
     eventBus.on('scalechanging', webViewerScaleChanging);
     eventBus.on('rotationchanging', webViewerRotationChanging);
+    /* # ezedox_pdfjs => disable sidebar
     eventBus.on('sidebarviewchanged', webViewerSidebarViewChanged);
     eventBus.on('pagemode', webViewerPageMode);
+    ! ezedox_pdfjs */
     eventBus.on('namedaction', webViewerNamedAction);
     eventBus.on('presentationmodechanged', webViewerPresentationModeChanged);
     eventBus.on('presentationmode', webViewerPresentationMode);
@@ -1343,9 +1381,11 @@ let PDFViewerApplication = {
     eventBus.on('documentproperties', webViewerDocumentProperties);
     eventBus.on('find', webViewerFind);
     eventBus.on('findfromurlhash', webViewerFindFromUrlHash);
+    /* # ezedox_pdfjs => disable file input
     if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
       eventBus.on('fileinputchange', webViewerFileInputChange);
     }
+    ! ezedox_pdfjs */
   },
 
   bindWindowEvents() {
@@ -1368,7 +1408,7 @@ let PDFViewerApplication = {
     };
 
     window.addEventListener('wheel', webViewerWheel);
-    window.addEventListener('click', webViewerClick);
+    // window.addEventListener('click', webViewerClick); /* # ezedox_pdfjs */
     window.addEventListener('keydown', webViewerKeyDown);
     window.addEventListener('resize', _boundEvents.windowResize);
     window.addEventListener('hashchange', _boundEvents.windowHashChange);
@@ -1389,8 +1429,10 @@ let PDFViewerApplication = {
     eventBus.off('pagechanging', webViewerPageChanging);
     eventBus.off('scalechanging', webViewerScaleChanging);
     eventBus.off('rotationchanging', webViewerRotationChanging);
+    /* # ezedox_pdfjs => disable sidebar
     eventBus.off('sidebarviewchanged', webViewerSidebarViewChanged);
     eventBus.off('pagemode', webViewerPageMode);
+    ! ezedox_pdfjs */
     eventBus.off('namedaction', webViewerNamedAction);
     eventBus.off('presentationmodechanged', webViewerPresentationModeChanged);
     eventBus.off('presentationmode', webViewerPresentationMode);
@@ -1414,9 +1456,11 @@ let PDFViewerApplication = {
     eventBus.off('documentproperties', webViewerDocumentProperties);
     eventBus.off('find', webViewerFind);
     eventBus.off('findfromurlhash', webViewerFindFromUrlHash);
+    /* # ezedox_pdfjs => disable file input
     if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
       eventBus.off('fileinputchange', webViewerFileInputChange);
     }
+    ! ezedox_pdfjs */
 
     _boundEvents.beforePrint = null;
     _boundEvents.afterPrint = null;
@@ -1426,7 +1470,7 @@ let PDFViewerApplication = {
     let { _boundEvents, } = this;
 
     window.removeEventListener('wheel', webViewerWheel);
-    window.removeEventListener('click', webViewerClick);
+    // window.removeEventListener('click', webViewerClick); /* # ezedox_pdfjs */
     window.removeEventListener('keydown', webViewerKeyDown);
     window.removeEventListener('resize', _boundEvents.windowResize);
     window.removeEventListener('hashchange', _boundEvents.windowHashChange);
@@ -1524,13 +1568,19 @@ function webViewerInitialized() {
     file = AppOptions.get('defaultUrl');
   }
 
+  /* # ezedox_pdfjs => disable file input
   if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
     let fileInput = document.createElement('input');
     fileInput.id = appConfig.openFileInputName;
     fileInput.className = 'fileInput';
     fileInput.setAttribute('type', 'file');
     fileInput.oncontextmenu = noContextMenuHandler;
-    document.body.appendChild(fileInput);
+    // # ezedox_pdfjs => use #viewer-body to add viewer events
+    if (document.getElementById('viewer-body')) {
+      document.getElementById('viewer-body').appendChild(fileInput);
+    } else {
+      document.body.appendChild(fileInput);
+    }
 
     if (!window.File || !window.FileReader ||
         !window.FileList || !window.Blob) {
@@ -1573,6 +1623,7 @@ function webViewerInitialized() {
     appConfig.toolbar.openFile.setAttribute('hidden', 'true');
     appConfig.secondaryToolbar.openFileButton.setAttribute('hidden', 'true');
   }
+ /! ezedox_pdfjs */
 
   if (typeof PDFJSDev !== 'undefined' &&
       PDFJSDev.test('FIREFOX || MOZCENTRAL') &&
@@ -1587,12 +1638,16 @@ function webViewerInitialized() {
 
   if (!PDFViewerApplication.supportsPrinting) {
     appConfig.toolbar.print.classList.add('hidden');
+    /* # ezedox_pdfjs => disable secondary toolbar
     appConfig.secondaryToolbar.printButton.classList.add('hidden');
+    ! ezedox_pdfjs */
   }
 
   if (!PDFViewerApplication.supportsFullscreen) {
     appConfig.toolbar.presentationModeButton.classList.add('hidden');
+    /* # ezedox_pdfjs => disable secondary toolbar
     appConfig.secondaryToolbar.presentationModeButton.classList.add('hidden');
+    ! ezedox_pdfjs */
   }
 
   if (PDFViewerApplication.supportsIntegratedFind) {
@@ -1605,6 +1660,7 @@ function webViewerInitialized() {
     }
   }, true);
 
+  /* # ezedox_pdfjs => disable sidebar
   appConfig.sidebar.toggleButton.addEventListener('click', function() {
     PDFViewerApplication.pdfSidebar.toggle();
   });
@@ -1617,8 +1673,10 @@ function webViewerInitialized() {
       PDFViewerApplication.error(msg, reason);
     });
   }
+  ! ezedox_pdfjs */
 }
 
+/* # ezedox_pdfjs => disable file input
 let webViewerOpenFileViaURL;
 if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
   webViewerOpenFileViaURL = function webViewerOpenFileViaURL(file) {
@@ -1657,6 +1715,7 @@ if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
     }
   };
 }
+! ezedox_pdfjs */
 
 function webViewerPageRendered(evt) {
   let pageNumber = evt.pageNumber;
@@ -1675,12 +1734,14 @@ function webViewerPageRendered(evt) {
     return;
   }
 
+  /* # ezedox_pdfjs => disable sidebar
   // Use the rendered page to set the corresponding thumbnail image.
   if (PDFViewerApplication.pdfSidebar.isThumbnailViewVisible) {
     let thumbnailView = PDFViewerApplication.pdfThumbnailViewer.
                         getThumbnail(pageIndex);
     thumbnailView.setImage(pageView);
   }
+  ! ezedox_pdfjs */
 
   if (typeof Stats !== 'undefined' && Stats.enabled && pageView.stats) {
     Stats.add(pageNumber, pageView.stats);
@@ -1723,6 +1784,7 @@ function webViewerTextLayerRendered(evt) {
   }
 }
 
+/* # ezedox_pdfjs => disable sidebar
 function webViewerPageMode(evt) {
   // Handle the 'pagemode' hash parameter, see also `PDFLinkService_setHash`.
   let mode = evt.mode, view;
@@ -1744,8 +1806,9 @@ function webViewerPageMode(evt) {
       console.error('Invalid "pagemode" hash parameter: ' + mode);
       return;
   }
-  PDFViewerApplication.pdfSidebar.switchView(view, /* forceOpen = */ true);
+  PDFViewerApplication.pdfSidebar.switchView(view, /* forceOpen = * / true);
 }
+! ezedox_pdfjs */
 
 function webViewerNamedAction(evt) {
   // Processing couple of named actions that might be useful.
@@ -1756,11 +1819,13 @@ function webViewerNamedAction(evt) {
       PDFViewerApplication.appConfig.toolbar.pageNumber.select();
       break;
 
+    /* # ezedox_pdfjs => disable findbar
     case 'Find':
       if (!PDFViewerApplication.supportsIntegratedFind) {
         PDFViewerApplication.findBar.toggle();
       }
       break;
+    ! ezedox_pdfjs */
   }
 }
 
@@ -1771,6 +1836,7 @@ function webViewerPresentationModeChanged(evt) {
     active ? PresentationModeState.FULLSCREEN : PresentationModeState.NORMAL;
 }
 
+/* # ezedox_pdfjs => disable sidebar
 function webViewerSidebarViewChanged(evt) {
   PDFViewerApplication.pdfRenderingQueue.isThumbnailViewEnabled =
     PDFViewerApplication.pdfSidebar.isThumbnailViewVisible;
@@ -1781,6 +1847,7 @@ function webViewerSidebarViewChanged(evt) {
     store.set('sidebarView', evt.view).catch(function() { });
   }
 }
+! ezedox_pdfjs */
 
 function webViewerUpdateViewarea(evt) {
   let location = evt.location, store = PDFViewerApplication.store;
@@ -1797,8 +1864,10 @@ function webViewerUpdateViewarea(evt) {
   let href =
     PDFViewerApplication.pdfLinkService.getAnchorUrl(location.pdfOpenParams);
   PDFViewerApplication.appConfig.toolbar.viewBookmark.href = href;
+  /* # ezedox_pdfjs => disable secondary toolbar
   PDFViewerApplication.appConfig.secondaryToolbar.viewBookmarkButton.href =
     href;
+  ! ezedox_pdfjs */
 
   // Show/hide the loading indicator in the page number input element.
   let currentPage =
@@ -1850,6 +1919,7 @@ function webViewerHashchange(evt) {
   }
 }
 
+/* # ezedox_pdfjs => disable file input and secondary toolbar
 let webViewerFileInputChange;
 if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
   webViewerFileInputChange = function webViewerFileInputChange(evt) {
@@ -1880,20 +1950,23 @@ if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
     let appConfig = PDFViewerApplication.appConfig;
     appConfig.toolbar.viewBookmark.setAttribute('hidden', 'true');
     appConfig.secondaryToolbar.viewBookmarkButton.setAttribute('hidden',
-                                                               'true');
+                                                                'true');
     appConfig.toolbar.download.setAttribute('hidden', 'true');
     appConfig.secondaryToolbar.downloadButton.setAttribute('hidden', 'true');
   };
 }
+! ezedox_pdfjs */
 
 function webViewerPresentationMode() {
   PDFViewerApplication.requestPresentationMode();
 }
 function webViewerOpenFile() {
+  /* # ezedox_pdfjs => disable file input
   if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
     let openFileInputName = PDFViewerApplication.appConfig.openFileInputName;
     document.getElementById(openFileInputName).click();
   }
+  ! ezedox_pdfjs */
 }
 function webViewerPrint() {
   window.print();
@@ -1983,7 +2056,8 @@ function webViewerScaleChanging(evt) {
 }
 
 function webViewerRotationChanging(evt) {
-  PDFViewerApplication.pdfThumbnailViewer.pagesRotation = evt.pagesRotation;
+  // # ezedox_pdfjs => disable thumbnail viewer
+  // PDFViewerApplication.pdfThumbnailViewer.pagesRotation = evt.pagesRotation;
 
   PDFViewerApplication.forceRendering();
   // Ensure that the active page doesn't change during rotation.
@@ -1994,11 +2068,13 @@ function webViewerPageChanging(evt) {
   let page = evt.pageNumber;
 
   PDFViewerApplication.toolbar.setPageNumber(page, evt.pageLabel || null);
+   /* # ezedox_pdfjs => disable sidebar and secondary toolbar
   PDFViewerApplication.secondaryToolbar.setPageNumber(page);
 
   if (PDFViewerApplication.pdfSidebar.isThumbnailViewVisible) {
     PDFViewerApplication.pdfThumbnailViewer.scrollThumbnailIntoView(page);
   }
+  ! ezedox_pdfjs */
 
   // We need to update stats.
   if (typeof Stats !== 'undefined' && Stats.enabled) {
@@ -2062,6 +2138,7 @@ function webViewerWheel(evt) {
   }
 }
 
+/* # ezedox_pdfjs => disable secondary toolbar
 function webViewerClick(evt) {
   if (!PDFViewerApplication.secondaryToolbar.isOpen) {
     return;
@@ -2073,6 +2150,7 @@ function webViewerClick(evt) {
     PDFViewerApplication.secondaryToolbar.close();
   }
 }
+! ezedox_pdfjs */
 
 function webViewerKeyDown(evt) {
   if (PDFViewerApplication.overlayManager.active) {
@@ -2238,6 +2316,7 @@ function webViewerKeyDown(evt) {
       case 80: // 'p'
         turnPage = -1;
         break;
+      /* # ezedox_pdfjs => disable seconary toolbar and findbar
       case 27: // esc key
         if (PDFViewerApplication.secondaryToolbar.isOpen) {
           PDFViewerApplication.secondaryToolbar.close();
@@ -2249,6 +2328,7 @@ function webViewerKeyDown(evt) {
           handled = true;
         }
         break;
+      ! ezedox_pdfjs */
       case 40: // down arrow
       case 34: // pg down
         // vertical scrolling using arrow/pg keys
@@ -2368,6 +2448,7 @@ function webViewerKeyDown(evt) {
  * @param {string} mode - The API PageMode value.
  * @returns {number} A value from {SidebarView}.
  */
+/* # ezedox_pdfjs => disable sidebar
 function apiPageModeToSidebarView(mode) {
   switch (mode) {
     case 'UseNone':
@@ -2383,6 +2464,7 @@ function apiPageModeToSidebarView(mode) {
   }
   return SidebarView.NONE; // Default value.
 }
+! ezedox_pdfjs */
 
 /* Abstract factory for the print service. */
 let PDFPrintServiceFactory = {

@@ -633,8 +633,10 @@ gulp.task('generic', ['buildnumber', 'locale'], function () {
         .pipe(postcss([autoprefixer(AUTOPREFIXER_CONFIG)]))
         .pipe(gulp.dest(GENERIC_DIR + 'web')),
 
+    /* # ezedox_pdfjs => don't add sample PDF to the build
     gulp.src('web/compressed.tracemonkey-pldi-09.pdf')
         .pipe(gulp.dest(GENERIC_DIR + 'web')),
+    ! ezedox_pdfjs */
   ]);
 });
 
@@ -698,8 +700,10 @@ gulp.task('minified-pre', ['buildnumber', 'locale'], function () {
         .pipe(postcss([autoprefixer(AUTOPREFIXER_CONFIG)]))
         .pipe(gulp.dest(MINIFIED_DIR + 'web')),
 
+    /* # ezedox_pdfjs => don't add sample PDF to the build
     gulp.src('web/compressed.tracemonkey-pldi-09.pdf')
         .pipe(gulp.dest(MINIFIED_DIR + 'web')),
+    ! ezedox_pdfjs */
   ]);
 });
 

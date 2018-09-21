@@ -20,6 +20,8 @@ import {
 import {
   createPromiseCapability, RenderingCancelledException, SVGGraphics
 } from 'pdfjs-lib';
+// # ezedox_pdfjs => import esign placeholders container for ezedox previewer !
+import { EsignPlaceholderContainer } from './pdf_page_view_ezedox';
 import { getGlobalEventBus } from './dom_events';
 import { RenderingStates } from './pdf_rendering_queue';
 import { viewerCompatibilityParams } from './viewer_compatibility';
@@ -392,9 +394,21 @@ class PDFPageView {
     let textLayer = null;
     if (this.textLayerMode !== TextLayerMode.DISABLE && this.textLayerFactory) {
       let textLayerDiv = document.createElement('div');
-      textLayerDiv.className = 'textLayer';
+      /* # ezedox_pdfjs
+      => add custom class 'preview-canvas-wrapper' to the textlayer ! */
+      textLayerDiv.className = 'textLayer preview-canvas-wrapper';
       textLayerDiv.style.width = canvasWrapper.style.width;
       textLayerDiv.style.height = canvasWrapper.style.height;
+
+      /* # ezedox_pdfjs
+      => append esign cursor, placeholders and wrapper to the page textlayer */
+      let { width, height, } = div.style;
+      let esignCursorWrapper =
+        new EsignPlaceholderContainer(width, height, this.id, textLayerDiv)
+        .showSignaturePlaceholders();
+      textLayerDiv.appendChild(esignCursorWrapper);
+      /* ! ezedox_pdfjs */
+
       if (this.annotationLayer && this.annotationLayer.div) {
         // The annotation layer needs to stay on top.
         div.insertBefore(textLayerDiv, this.annotationLayer.div);

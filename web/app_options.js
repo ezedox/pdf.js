@@ -14,8 +14,6 @@
  */
 
 import { apiCompatibilityParams } from 'pdfjs-lib';
-// # ezedox_pdfjs => import custom app options for ezedox previewer
-import EZEDOX_CONSTANTS from '../ezedox-constants';
 import { viewerCompatibilityParams } from './viewer_compatibility';
 
 const OptionKind = {
@@ -37,12 +35,12 @@ const defaultOptions = {
   },
   defaultUrl: {
     /** @type {string} */
-    value: EZEDOX_CONSTANTS.defaultUrl,
+    value: 'compressed.tracemonkey-pldi-09.pdf',
     kind: OptionKind.VIEWER,
   },
   defaultZoomValue: {
     /** @type {string} */
-    value: EZEDOX_CONSTANTS.defaultZoomValue,
+    value: '',
     kind: OptionKind.VIEWER,
   },
   disableHistory: {
@@ -115,7 +113,7 @@ const defaultOptions = {
   },
   showPreviousViewOnLoad: {
     /** @type {boolean} */
-    value: EZEDOX_CONSTANTS.showPreviousViewOnLoad,
+    value: true,
     kind: OptionKind.VIEWER,
   },
   sidebarViewOnLoad: {
@@ -152,7 +150,7 @@ const defaultOptions = {
   cMapUrl: {
     /** @type {string} */
     value: (typeof PDFJSDev === 'undefined' || !PDFJSDev.test('PRODUCTION') ?
-            '../external/bcmaps/' : EZEDOX_CONSTANTS.cMapUrl),
+            '../external/bcmaps/' : '../web/cmaps/'),
     kind: OptionKind.API,
   },
   disableAutoFetch: {
@@ -214,7 +212,7 @@ const defaultOptions = {
   workerSrc: {
     /** @type {string} */
     value: (typeof PDFJSDev === 'undefined' || !PDFJSDev.test('PRODUCTION') ?
-            '../src/worker_loader.js' : EZEDOX_CONSTANTS.workerSrc),
+            '../src/worker_loader.js' : '../build/pdf.worker.js'),
     kind: OptionKind.WORKER,
   },
 };
